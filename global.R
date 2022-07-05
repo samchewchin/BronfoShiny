@@ -45,3 +45,10 @@ rm(Divs, Hell, Long, Meta, Pres, Pres_long)
 
 fish_list <- sort(unique(Bronfo$scientific_name))
 
+# map_df <- Bronfo %>%
+#   filter(scientific_name %in% c(),
+#          Presence != 0) %>%
+#   pivot_wider(id_cols = -totalcount,
+#               names_from = scientific_name,
+#               values_from = Presence)
+# nrow(map_df)

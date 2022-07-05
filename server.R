@@ -21,11 +21,17 @@ server <- function(input, output) {
   # use leafletProxy observer to add points
   # https://rstudio.github.io/leaflet/shiny.html
   observe({
-    leafletProxy("map", data=map_df()) %>%
-      # clear any previous markers
-      clearMarkers() %>%
-      addMarkers(data=map_df(),
-                 label=~Site)
+    if (nrow(map_df()) != 0) {
+      leafletProxy("map", data=map_df()) %>%
+        # clear any previous markers
+        clearMarkers() %>%
+        addMarkers(data=map_df(),
+                   label=~Site)
+    } else {
+      leafletProxy("map", data=map_df()) %>%
+        # clear any previous markers
+        clearMarkers()
+    }
   })
   
 }

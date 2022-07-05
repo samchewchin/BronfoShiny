@@ -20,7 +20,7 @@ ui <- fluidPage(
     mainPanel(
       
       # Output: Leaflet Map ----
-      leafletOutput(outputId = "map")
+      leafletOutput(outputId = "map", height = "100vh")
       
     )
   )
