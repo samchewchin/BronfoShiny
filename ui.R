@@ -10,9 +10,9 @@ ui <- fluidPage(
     sidebarPanel(
       
       # Input: Select fish ----
-      selectInput("fishes", label = "Fishes:",
-                  choices = fish_list, 
-                  multiple = TRUE)
+      checkboxGroupInput("fishes", label = "Fishes:",
+                  choices = fish_list,
+                  selected = c("Alosinae"))
       
     ),
     

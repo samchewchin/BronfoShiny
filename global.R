@@ -43,13 +43,5 @@ rm(Divs, Hell, Long, Meta, Pres, Pres_long)
 
 # app variables ----
 
-fish_list <- unique(Bronfo$scientific_name)
+fish_list <- sort(unique(Bronfo$scientific_name))
 
-
-# test functionality
-# Bronfo %>%
-#   filter(scientific_name %in% c("Ameiurus natalis"),
-#          Presence != 0) %>%
-#   pivot_wider(id_cols = -totalcount,
-#               names_from = scientific_name,
-#               values_from = Presence)
