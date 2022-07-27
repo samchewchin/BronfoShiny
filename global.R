@@ -7,48 +7,28 @@ library(leaflet)
 library(tidyverse)
 
 # load data ----
+Long<-read_csv("data/eDNARachgeo.csv")
 
-# Read in data
-# These files are outputs from DataPipe.Rmd. I'll use my Hellinger transformed read abundances of fish taxa and join them with the metadata, which include spatial coordinates
-# Long format of all detections
-Long<-read_csv("data/Bron_optax_long.csv")%>%
-  select(-Type)
-# Species detections
-#Hellinger transformed relative read abundances
-Hell<-read_csv("data/Bron_optax_Hell.csv")
-#Presence Absence
-Pres<-read_csv("data/Bron_optax_binary.csv")
 
-# Metadata, including lat/lon
-Meta<-read_csv("data/Bron_meta.csv")%>%
-  select(Site, Lat, Lon)
-#Diversity stats
-Divs<-read_csv("data/Bron_Hell_divs.csv")
+# Add column with a string containing all detected species
 
-# prep data ----
+# define function to do the work
 
-Pres_long<-Pres%>%
-  pivot_longer(names_to="scientific_name", 
-               values_to="Presence",
-               cols=-Site)
+findfish<-function(sitename){
+  fishlist<-Long%>%filter(Site==sitename)%>%select(scientific_name)
+  stringlist<-paste(fishlist$scientific_name, collapse="<br>")
+  return(stringlist)
+}
 
-# create shiny app dataframe
-Bronfo<-Long%>%select(-River)%>%
-  full_join(Pres_long, 
-            by = c("Site", "scientific_name"))%>%
-  left_join(Meta, by="Site")
+# Make tibble of sites and stringlists of fishes
+Bronfo<-Long%>%
+  group_by(Site)%>%
+  summarize()%>%
+  rowwise()%>%
+    mutate(Fishes=findfish(Site))%>%
+  left_join(Long, by="Site")
 
-# remove unused dataframes
-rm(Divs, Hell, Long, Meta, Pres, Pres_long)
 
 # app variables ----
 
 fish_list <- sort(unique(Bronfo$scientific_name))
-
-# map_df <- Bronfo %>%
-#   filter(scientific_name %in% c(),
-#          Presence != 0) %>%
-#   pivot_wider(id_cols = -totalcount,
-#               names_from = scientific_name,
-#               values_from = Presence)
-# nrow(map_df)
